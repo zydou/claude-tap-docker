@@ -9,8 +9,11 @@ There is no application source code here — the only build input is a `Dockerfi
 
 ## Build & release
 
-The image is built exclusively through GitHub Actions (`.github/workflows/build.yml`), triggered on pushes that change the `Dockerfile` or the workflow itself, plus `workflow_dispatch`.
-The job logs into GHCR with `GITHUB_TOKEN` and pushes `ghcr.io/<owner>/claude-tap:latest` for `linux/amd64,linux/arm64`.
+The image is built exclusively through GitHub Actions (`.github/workflows/build.yml`), triggered on pushes that change the `Dockerfile` or the workflow itself,
+plus `workflow_dispatch` and a daily `schedule` (`0 16 * * *` UTC).
+A `check` job queries PyPI for the latest `claude-tap` version and, on the schedule trigger, skips the build when that version's `v<version>` tag already exists in GHCR;
+`push` and `workflow_dispatch` always rebuild.
+The `build` job logs into GHCR with `GITHUB_TOKEN` and pushes `ghcr.io/<owner>/claude-tap:v<version>` plus `:latest` for `linux/amd64,linux/arm64`.
 
 To build the image locally for testing:
 
