@@ -34,7 +34,7 @@ claude-tap --tap-no-launch --tap-no-open --tap-port 9999 --tap-live-port 19527
 ## Usage
 
 ```bash
-docker run --rm -p 9999:9999 -p 19527:19527 ghcr.io/zydou/claude-tap-docker/claude-tap:latest
+docker run --rm -p 9999:9999 -p 19527:19527 -v $HOME/claude-tap:/tmp -e CLOUDTAP_DB=/tmp/traces.sqlite3 ghcr.io/zydou/claude-tap-docker/claude-tap:latest
 ```
 
 ## Build locally

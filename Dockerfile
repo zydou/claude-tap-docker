@@ -5,13 +5,13 @@ RUN apk add --no-cache shadow && \
     apk del -r shadow
 
 USER claude
-WORKDIR /home/claude
 ENV PATH=/home/claude/.local/bin:$PATH \
-    ANTHROPIC_BASE_URL=https://api.anthropic.com
+ANTHROPIC_BASE_URL=https://api.anthropic.com
 
 EXPOSE 9999 19527
 
 RUN --mount=from=ghcr.io/astral-sh/uv:latest,source=/uv,target=/bin/uv \
-    uv tool install --no-python-downloads --no-cache --compile-bytecode claude-tap
+uv tool install --no-python-downloads --no-cache --compile-bytecode claude-tap
 
-ENTRYPOINT ["claude-tap", "--tap-no-launch", "--tap-no-open", "--tap-port", "9999", "--tap-live-port", "19527"]
+WORKDIR /tmp
+ENTRYPOINT ["claude-tap", "--tap-no-launch", "--tap-no-open", "--tap-port", "9999", "--tap-live-port", "19527", "--tap-output-dir", "/tmp"]
